@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://c5jy6i1oxa6c2"]
+[gd_scene load_steps=18 format=4 uid="uid://c5jy6i1oxa6c2"]
 
 [ext_resource type="TileSet" uid="uid://brkk2beiitq7r" path="res://Assets/Tilesets/TileSet/oak_woods_tile_set.tres" id="1_r4hj7"]
 [ext_resource type="Script" uid="uid://be16tvf0w6yro" path="res://Scripts/character_body_2d.gd" id="2_r4hj7"]
@@ -44,6 +44,27 @@ func _process(delta):
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oafbg"]
 size = Vector2(8, 16)
 
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_v3cvx"]
+graph_offset = Vector2(77, -45)
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_rvrhr"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_we2lx"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n3nmi"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_o8xmm"]
+states/Start/position = Vector2(219, 100)
+"states/地面状态/node" = SubResource("AnimationNodeStateMachine_v3cvx")
+"states/地面状态/position" = Vector2(532, 100)
+"states/水中/node" = SubResource("AnimationNodeStateMachine_rvrhr")
+"states/水中/position" = Vector2(604, 182)
+"states/飞行/node" = SubResource("AnimationNodeStateMachine_we2lx")
+"states/飞行/position" = Vector2(468, 182)
+transitions = ["Start", "地面状态", SubResource("AnimationNodeStateMachineTransition_n3nmi")]
+graph_offset = Vector2(51, -76)
+
 [node name="test_map" type="Node2D"]
 
 [node name="Label" type="Label" parent="."]
@@ -57,7 +78,7 @@ offset_bottom = -228.57
 grow_horizontal = 2
 text = "⬆️键跳跃,可以无限跳跃
 ⬅️键左移
-➡️键右移"
+→键右移"
 horizontal_alignment = 1
 
 [node name="TileMaps" type="Node2D" parent="."]
@@ -79,10 +100,11 @@ script = SubResource("GDScript_rudm6")
 shape = SubResource("RectangleShape2D_oafbg")
 
 [node name="MovementComp" type="Node2D" parent="CharacterBody2D" node_paths=PackedStringArray("Charactercharacter")]
+position = Vector2(1, 0)
 script = ExtResource("3_t3hjb")
 Charactercharacter = NodePath("..")
 Speedmax_speed = 250.0
-Speedmax_speed_time = 0.6
+Speedmax_speed_time = 0.3
 Speedmax_speed_stop_time = 0.2
 Jumpjump_height = 48.0
 Jumpjump_air_time = 0.25
@@ -90,6 +112,7 @@ Jumpjump_air_time = 0.25
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Control" type="Control" parent="." node_paths=PackedStringArray("move_comp", "max_speed_time", "max_speed_stop_time", "max_speed", "jump_height", "jump_air_time")]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 95.0
@@ -173,3 +196,12 @@ offset_left = 112.0
 offset_top = 3.0
 offset_right = 222.0
 offset_bottom = 43.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../CharacterBody2D")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../CharacterBody2D")
+tree_root = SubResource("AnimationNodeStateMachine_o8xmm")
+advance_expression_base_node = NodePath("../CharacterBody2D")
+anim_player = NodePath("../AnimationPlayer")
