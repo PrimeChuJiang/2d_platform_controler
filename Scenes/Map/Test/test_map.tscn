@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=4 uid="uid://c5jy6i1oxa6c2"]
+[gd_scene load_steps=19 format=4 uid="uid://c5jy6i1oxa6c2"]
 
 [ext_resource type="TileSet" uid="uid://brkk2beiitq7r" path="res://Assets/Tilesets/TileSet/oak_woods_tile_set.tres" id="1_r4hj7"]
 [ext_resource type="Script" uid="uid://be16tvf0w6yro" path="res://Scripts/character_body_2d.gd" id="2_r4hj7"]
-[ext_resource type="Script" uid="uid://xe0v2icmlmqd" path="res://Scripts/movement_comp.gd" id="3_t3hjb"]
 [ext_resource type="Shader" uid="uid://dhj34oad5e72j" path="res://Scripts/Shaders/tail.gdshader" id="3_yxtbf"]
 [ext_resource type="Texture2D" uid="uid://btiskw475joov" path="res://Assets/Character.png" id="4_rudm6"]
+[ext_resource type="Script" uid="uid://dlsiyxdsrx1ka" path="res://Scripts/StateMachine.gd" id="5_v3cvx"]
+[ext_resource type="Script" uid="uid://xe0v2icmlmqd" path="res://Scripts/ground_node.gd" id="6_rvrhr"]
 [ext_resource type="Script" uid="uid://brvcs8fbfx1yp" path="res://Scripts/TestScripts/ChangeAttribute.gd" id="6_v3cvx"]
 
 [sub_resource type="Gradient" id="Gradient_rudm6"]
@@ -99,15 +100,15 @@ script = SubResource("GDScript_rudm6")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 shape = SubResource("RectangleShape2D_oafbg")
 
-[node name="MovementComp" type="Node2D" parent="CharacterBody2D" node_paths=PackedStringArray("Charactercharacter")]
+[node name="MovementComp" type="Node2D" parent="CharacterBody2D" node_paths=PackedStringArray("character", "default_node")]
 position = Vector2(1, 0)
-script = ExtResource("3_t3hjb")
-Charactercharacter = NodePath("..")
-Speedmax_speed = 250.0
-Speedmax_speed_time = 0.3
-Speedmax_speed_stop_time = 0.2
-Jumpjump_height = 48.0
-Jumpjump_air_time = 0.25
+script = ExtResource("5_v3cvx")
+character = NodePath("..")
+default_node = NodePath("GroundNode")
+
+[node name="GroundNode" type="Node2D" parent="CharacterBody2D/MovementComp"]
+script = ExtResource("6_rvrhr")
+metadata/_custom_type_script = "uid://xe0v2icmlmqd"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
