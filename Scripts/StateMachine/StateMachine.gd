@@ -1,4 +1,3 @@
-@tool
 extends Node2D
 
 class_name StateMachine
@@ -16,7 +15,7 @@ func _ready():
 		if node is StateNode:
 			state_dic[node.state_node_type] = node
 			node.change_state.connect(_change_state)
-			
+			node.character = character
 			
 	if default_node == null : 
 		# 如果没有指定默认节点，那么我们将字典内的第一个状态作为默认状态

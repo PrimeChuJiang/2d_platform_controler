@@ -1,11 +1,5 @@
 extends Node2D
 
-class_name StateNode
-
-@export var state_node_type : MovementCompConfig.MovementState
-
-signal change_state(from : StateNode, to : StateNode, param)
-
 func intro(param = null):
 	pass
 

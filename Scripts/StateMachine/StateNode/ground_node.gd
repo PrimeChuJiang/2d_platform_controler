@@ -2,8 +2,6 @@ extends StateNode
 
 class_name GroundNode
 
-@export_group("角色对象", "Character")
-@export var Charactercharacter : CharacterBody2D
 @export_group("移动","Speed")
 @export var Speedmax_speed : float
 @export var Speedmax_speed_time : float
@@ -11,11 +9,7 @@ class_name GroundNode
 @export_group("跳跃","Jump")
 @export var Jumpjump_height : float
 @export var Jumpjump_air_time : float
-@export var Jumpcan_long_jump : bool
-@export var Jumplong_jump_multipler : float = 1.5
-
-# TODO: 增加枚举，控制角色状态
-# TODO: 需要增加一个开关，控制是否可以进行长跳和短跳
+@export var Jumpforce_permanent_fall_speed : bool
 
 var movement_state : MovementCompConfig.MovementState
 
@@ -41,32 +35,32 @@ func intro(param = null):
 	prints(accelerate_up, accelerate_down, accelerate_v, jump_speed)
 
 var total_time : float
-func _physics_process(delta):
-	if not Charactercharacter.is_on_floor():
-		if Charactercharacter.velocity.y < jump_speed:
-			Charactercharacter.velocity.y = move_toward(Charactercharacter.velocity.y, jump_speed, accelerate_v*delta)
-		else :
-			# Charactercharacter.velocity.y = move_toward(Charactercharacter.velocity.y, jump_speed * 2, accelerate_v*delta)
-			Charactercharacter.velocity.y += accelerate_v * delta
-		print(Charactercharacter.velocity.y)
+func physics_tick(delta):
+	if not character.is_on_floor():
+		if character.velocity.y < jump_speed:
+			character.velocity.y = move_toward(character.velocity.y, jump_speed, accelerate_v*delta)
+		elif !Jumpforce_permanent_fall_speed :
+			# character.velocity.y = move_toward(character.velocity.y, jump_speed * 2, accelerate_v*delta)
+			character.velocity.y += accelerate_v * delta
+		print(character.velocity.y)
 		total_time += delta
 		print(total_time)
 
 	var direction = Input.get_axis("ui_left", "ui_right")
 
-	if direction != 0 and direction * Charactercharacter.velocity.x >= 0:
-		Charactercharacter.velocity.x = move_toward(Charactercharacter.velocity.x, Speedmax_speed*direction, accelerate_up*delta)
+	if direction != 0 and direction * character.velocity.x >= 0:
+		character.velocity.x = move_toward(character.velocity.x, Speedmax_speed*direction, accelerate_up*delta)
 	else :
-		if not Charactercharacter.is_on_floor() :
-			Charactercharacter.velocity.x = move_toward(Charactercharacter.velocity.x, 0, accelerate_up*delta)
+		if not character.is_on_floor() :
+			character.velocity.x = move_toward(character.velocity.x, 0, accelerate_up*delta)
 		else:
 			total_time = 0.0
-			Charactercharacter.velocity.x = move_toward(Charactercharacter.velocity.x, 0, accelerate_down*delta)
+			character.velocity.x = move_toward(character.velocity.x, 0, accelerate_down*delta)
 
 	if Input.is_action_just_pressed("ui_up"):
-		Charactercharacter.velocity.y = -jump_speed
-		#print(Charactercharacter.velocity.y)
-	#Charactercharacter.move_and_slide()
+		character.velocity.y = -jump_speed
+		#print(character.velocity.y)
+	#character.move_and_slide()
 
 func count_attribute():
 	accelerate_up = Speedmax_speed / Speedmax_speed_time # 求加速加速度

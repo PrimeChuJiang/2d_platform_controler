@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpr66pswwc1yh"]
+
+[ext_resource type="Texture2D" uid="uid://btiskw475joov" path="res://Assets/Character.png" id="1_guufe"]
+[ext_resource type="Script" uid="uid://bcb5r608oiwot" path="res://Scripts/Water/WaterSpring.gd" id="1_thl4c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_thl4c"]
+atlas = ExtResource("1_guufe")
+region = Rect2(0, 0, 8, 8)
+
+[node name="WaterSpring" type="Node2D"]
+script = ExtResource("1_thl4c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_thl4c")

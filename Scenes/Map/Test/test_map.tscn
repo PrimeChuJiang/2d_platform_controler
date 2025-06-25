@@ -1,12 +1,13 @@
-[gd_scene load_steps=19 format=4 uid="uid://c5jy6i1oxa6c2"]
+[gd_scene load_steps=20 format=4 uid="uid://c5jy6i1oxa6c2"]
 
 [ext_resource type="TileSet" uid="uid://brkk2beiitq7r" path="res://Assets/Tilesets/TileSet/oak_woods_tile_set.tres" id="1_r4hj7"]
-[ext_resource type="Script" uid="uid://be16tvf0w6yro" path="res://Scripts/character_body_2d.gd" id="2_r4hj7"]
+[ext_resource type="Script" uid="uid://be16tvf0w6yro" path="res://Scripts/Player/character_body_2d.gd" id="2_r4hj7"]
 [ext_resource type="Shader" uid="uid://dhj34oad5e72j" path="res://Scripts/Shaders/tail.gdshader" id="3_yxtbf"]
 [ext_resource type="Texture2D" uid="uid://btiskw475joov" path="res://Assets/Character.png" id="4_rudm6"]
-[ext_resource type="Script" uid="uid://dlsiyxdsrx1ka" path="res://Scripts/StateMachine.gd" id="5_v3cvx"]
-[ext_resource type="Script" uid="uid://xe0v2icmlmqd" path="res://Scripts/ground_node.gd" id="6_rvrhr"]
+[ext_resource type="Script" uid="uid://dlsiyxdsrx1ka" path="res://Scripts/StateMachine/StateMachine.gd" id="5_v3cvx"]
+[ext_resource type="Script" uid="uid://xe0v2icmlmqd" path="res://Scripts/StateMachine/StateNode/ground_node.gd" id="6_rvrhr"]
 [ext_resource type="Script" uid="uid://brvcs8fbfx1yp" path="res://Scripts/TestScripts/ChangeAttribute.gd" id="6_v3cvx"]
+[ext_resource type="PackedScene" uid="uid://ccbarl8htjtjr" path="res://Scenes/Water/WaterBody.tscn" id="8_we2lx"]
 
 [sub_resource type="Gradient" id="Gradient_rudm6"]
 
@@ -108,11 +109,17 @@ default_node = NodePath("GroundNode")
 
 [node name="GroundNode" type="Node2D" parent="CharacterBody2D/MovementComp"]
 script = ExtResource("6_rvrhr")
+Speedmax_speed = 500.0
+Speedmax_speed_time = 0.5
+Speedmax_speed_stop_time = 0.3
+Jumpjump_height = 48.0
+Jumpjump_air_time = 0.2
+Jumpforce_permanent_fall_speed = true
 metadata/_custom_type_script = "uid://xe0v2icmlmqd"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="Control" type="Control" parent="." node_paths=PackedStringArray("move_comp", "max_speed_time", "max_speed_stop_time", "max_speed", "jump_height", "jump_air_time")]
+[node name="Control" type="Control" parent="." node_paths=PackedStringArray("max_speed_time", "max_speed_stop_time", "max_speed", "jump_height", "jump_air_time")]
 visible = false
 layout_mode = 3
 anchors_preset = 0
@@ -121,7 +128,6 @@ offset_top = -304.0
 offset_right = 279.0
 offset_bottom = -167.0
 script = ExtResource("6_v3cvx")
-move_comp = NodePath("../CharacterBody2D/MovementComp")
 max_speed_time = NodePath("Label/TextEdit")
 max_speed_stop_time = NodePath("Label2/TextEdit")
 max_speed = NodePath("Label3/TextEdit")
@@ -206,3 +212,5 @@ root_node = NodePath("../CharacterBody2D")
 tree_root = SubResource("AnimationNodeStateMachine_o8xmm")
 advance_expression_base_node = NodePath("../CharacterBody2D")
 anim_player = NodePath("../AnimationPlayer")
+
+[node name="WaterBody" parent="." instance=ExtResource("8_we2lx")]
