@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://c5jy6i1oxa6c2"]
+[gd_scene load_steps=22 format=4 uid="uid://c5jy6i1oxa6c2"]
 
 [ext_resource type="TileSet" uid="uid://brkk2beiitq7r" path="res://Assets/Tilesets/TileSet/oak_woods_tile_set.tres" id="1_r4hj7"]
 [ext_resource type="Script" uid="uid://be16tvf0w6yro" path="res://Scripts/Player/character_body_2d.gd" id="2_r4hj7"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://xe0v2icmlmqd" path="res://Scripts/StateMachine/StateNode/ground_node.gd" id="6_rvrhr"]
 [ext_resource type="Script" uid="uid://brvcs8fbfx1yp" path="res://Scripts/TestScripts/ChangeAttribute.gd" id="6_v3cvx"]
 [ext_resource type="PackedScene" uid="uid://ccbarl8htjtjr" path="res://Scenes/Water/WaterBody.tscn" id="8_we2lx"]
+[ext_resource type="Shader" uid="uid://trkls6n38654" path="res://Shaders/PixelAdapter.gdshader" id="9_n3nmi"]
 
 [sub_resource type="Gradient" id="Gradient_rudm6"]
 
@@ -67,6 +68,11 @@ states/Start/position = Vector2(219, 100)
 transitions = ["Start", "地面状态", SubResource("AnimationNodeStateMachineTransition_n3nmi")]
 graph_offset = Vector2(51, -76)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o8xmm"]
+shader = ExtResource("9_n3nmi")
+shader_parameter/pixel_size = 4.0
+shader_parameter/mix_sampling = 2
+
 [node name="test_map" type="Node2D"]
 
 [node name="Label" type="Label" parent="."]
@@ -91,6 +97,8 @@ tile_set = ExtResource("1_r4hj7")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 position = Vector2(-63.19, -300)
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("2_r4hj7")
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
@@ -214,3 +222,7 @@ advance_expression_base_node = NodePath("../CharacterBody2D")
 anim_player = NodePath("../AnimationPlayer")
 
 [node name="WaterBody" parent="." instance=ExtResource("8_we2lx")]
+material = SubResource("ShaderMaterial_o8xmm")
+spring_number = 30
+depth = 50.0
+border_thickness = 1.0
